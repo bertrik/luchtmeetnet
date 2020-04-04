@@ -10,6 +10,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ * See https://api-docs.luchtmeetnet.nl/
+ */
 public interface ILuchtmeetnetRestApi {
 
     @GET("/open_api/stations")
