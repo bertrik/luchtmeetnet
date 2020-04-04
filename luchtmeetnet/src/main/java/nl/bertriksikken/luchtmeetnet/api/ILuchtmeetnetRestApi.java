@@ -1,5 +1,7 @@
 package nl.bertriksikken.luchtmeetnet.api;
 
+import java.time.Instant;
+
 import nl.bertriksikken.luchtmeetnet.api.dto.Components;
 import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
 import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
@@ -29,5 +31,9 @@ public interface ILuchtmeetnetRestApi {
 
     @GET("/open_api/components")
     Call<Components> getComponents(@Query("page") int page);
+
+    @GET("/open_api/measurements")
+    Call<Measurements> getMeasurements(@Query("page") int page, @Query("start") Instant startTime,
+            @Query("end") Instant endTime);
 
 }

@@ -2,6 +2,7 @@ package nl.bertriksikken.luchtmeetnet;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -46,17 +47,17 @@ public final class LuchtmeetnetApiTest {
         List<String> numbers = api.getStationNumbers();
         LOG.info("Found {} stations", numbers.size());
 
-        // show info for each station
-        for (String number : numbers) {
-            StationData stationData = api.getStationData(number);
-            LOG.info("Station {}: {}", number, stationData);
-        }
-
-        // show measurements for one station
+        // show information for a specific station
         String number = numbers.get(0);
+        StationData stationData = api.getStationData(number);
+        LOG.info("Station {}: {}", number, stationData);
+        
+        // get all measurements from the past hour
         LOG.info("Data for station {}:", number);
-        List<MeasurementData> measurementData = api.getStationMeasurements(number);
-        LOG.info("Measurements: {}", measurementData);
+        Instant now = Instant.now();
+        List<MeasurementData> measurementData = api.getMeasurements(now);
+        LOG.info("Found {} neasurements for the past hour", measurementData.size());
+
     }
 
 }

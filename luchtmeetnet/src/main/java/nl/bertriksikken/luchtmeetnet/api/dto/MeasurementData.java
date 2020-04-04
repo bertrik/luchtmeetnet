@@ -4,9 +4,14 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class MeasurementData {
+
+    @JsonProperty("station_number")
+    private String stationNumber;
 
     @JsonProperty("value")
     private double value;
@@ -22,8 +27,9 @@ public final class MeasurementData {
         // jackson constructor
     }
 
-    public MeasurementData(double value, String formula, Date timeStamp) {
+    public MeasurementData(String stationNumber, double value, String formula, Date timeStamp) {
         this();
+        this.stationNumber = stationNumber;
         this.value = value;
         this.formula = formula;
         this.timeStamp = new Date(timeStamp.getTime());
@@ -31,7 +37,8 @@ public final class MeasurementData {
 
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "{value=%s,formula=%s,timestamp=%s}", value, formula, timeStamp);
+        return String.format(Locale.ROOT, "{station=%s,value=%s,formula=%s,timestamp=%s}", stationNumber, value,
+                formula, timeStamp);
     }
 
 }
