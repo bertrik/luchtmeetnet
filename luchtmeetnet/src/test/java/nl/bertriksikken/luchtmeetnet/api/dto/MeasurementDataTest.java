@@ -15,7 +15,7 @@ public final class MeasurementDataTest {
 
     @Test
     public void testSerialize() throws JsonProcessingException {
-        MeasurementData data = new MeasurementData(1.23, "NO", new Date());
+        MeasurementData data = new MeasurementData("123", 1.23, "NO", new Date());
         ObjectMapper mapper = new ObjectMapper();
         String s = mapper.writeValueAsString(data);
         LOG.info(s);
