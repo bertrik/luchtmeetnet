@@ -3,6 +3,7 @@ package nl.bertriksikken.luchtmeetnet.api;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public final class LuchtmeetnetApi {
 
     public List<MeasurementData> getStationMeasurements(String number) throws IOException {
         int page = 1;
-        Response<Measurements> response = api.getStationMeasurement(number, 1).execute();
+        Response<Measurements> response = api.getStationMeasurement(1, number).execute();
         if (!response.isSuccessful()) {
             throw new IOException("Request failed for page " + page);
         }
@@ -136,7 +137,7 @@ public final class LuchtmeetnetApi {
     }
 
     public List<MeasurementData> getMeasurements(Instant instant) throws IOException {
-    	Instant endTime = instant;
+    	Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
     	Instant startTime = endTime.minus(Duration.ofMinutes(60));
     	int page = 1;
     	Response<Measurements> response = api.getMeasurements(page, startTime, endTime).execute();
