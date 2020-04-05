@@ -10,7 +10,7 @@ public final class ComponentsData {
     private String formula;
 
     @JsonProperty("name")
-    private BilingualText name;
+    private MultiLingualText name;
 
     @Override
     public String toString() {

@@ -10,13 +10,13 @@ public final class OrganisationData {
     private int id;
 
     @JsonProperty("name")
-    private BilingualText name;
+    private MultiLingualText name;
 
     public int getId() {
         return id;
     }
 
-    public BilingualText getName() {
+    public MultiLingualText getName() {
         return name;
     }
 

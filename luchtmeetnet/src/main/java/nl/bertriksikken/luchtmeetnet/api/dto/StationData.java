@@ -13,7 +13,7 @@ public final class StationData {
     private String location;
 
     @JsonProperty("description")
-    private BilingualText description;
+    private MultiLingualText description;
     
     @JsonProperty("geometry")
     private PointGeometry geometry;
