@@ -1,9 +1,12 @@
 package nl.bertriksikken.luchtmeetnet;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,17 +49,23 @@ public final class LuchtmeetnetApiTest {
         // get a list of all stations
         List<String> numbers = api.getStationNumbers();
         LOG.info("Found {} stations", numbers.size());
-
-        // show information for a specific station
-        String number = numbers.get(0);
-        StationData stationData = api.getStationData(number);
-        LOG.info("Station {}: {}", number, stationData);
         
+        // get a list of all station data
+        Map<String, StationData> stationData = new HashMap<>();
+        for (String stationNr : numbers) {
+            LOG.info("Getting data for station {}", stationNr);
+            stationData.put(stationNr, api.getStationData(stationNr));
+        }
+
         // get all measurements from the past hour
         Instant now = Instant.now();
         List<MeasurementData> measurementData = api.getMeasurements("NO2", now);
         LOG.info("Found {} neasurements for the past hour", measurementData.size());
 
+        File file = new File("geojson.json");
+        GeoJsonWriter writer = new GeoJsonWriter();
+        writer.writeGeoJson(file, stationData, measurementData);
     }
+
 
 }

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class PointGeometry {
@@ -26,6 +27,14 @@ public final class PointGeometry {
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "{type=%s,coordinates=%s}", type, Arrays.toString(coordinates));
+    }
+
+    public double getLatitude() {
+        return coordinates[1];
+    }
+
+    public double getLongitude() {
+        return coordinates[0];
     }
 
 }

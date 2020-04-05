@@ -35,6 +35,22 @@ public final class MeasurementData {
         this.timeStamp = new Date(timeStamp.getTime());
     }
 
+    public String getStationNumber() {
+        return stationNumber;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public String getFormula() {
+        return formula;
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "{station=%s,value=%s,formula=%s,timestamp=%s}", stationNumber, value,

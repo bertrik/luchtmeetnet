@@ -24,6 +24,10 @@ public final class StationData {
     @JsonProperty("components")
     private List<String> components;
 
+    public PointGeometry getGeometry() {
+        return geometry;
+    }
+    
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "{location=%s, type=%s, geometry=%s}", location, type, geometry);
