@@ -12,14 +12,17 @@ public final class StationData {
     @JsonProperty("location")
     private String location;
 
+    @JsonProperty("description")
+    private BilingualText description;
+    
+    @JsonProperty("geometry")
+    private PointGeometry geometry;
+    
     @JsonProperty("type")
     private String type;
 
     @JsonProperty("components")
     private List<String> components;
-
-    @JsonProperty("geometry")
-    private PointGeometry geometry;
 
     @Override
     public String toString() {
