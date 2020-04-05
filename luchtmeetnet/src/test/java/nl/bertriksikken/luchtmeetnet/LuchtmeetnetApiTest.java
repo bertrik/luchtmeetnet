@@ -54,7 +54,7 @@ public final class LuchtmeetnetApiTest {
         
         // get all measurements from the past hour
         Instant now = Instant.now();
-        List<MeasurementData> measurementData = api.getMeasurements(now);
+        List<MeasurementData> measurementData = api.getMeasurements("NO2", now);
         LOG.info("Found {} neasurements for the past hour", measurementData.size());
 
     }

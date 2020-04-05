@@ -33,7 +33,7 @@ public interface ILuchtmeetnetRestApi {
     Call<Components> getComponents(@Query("page") int page);
 
     @GET("/open_api/measurements")
-    Call<Measurements> getMeasurements(@Query("page") int page, @Query("start") Instant startTime,
-            @Query("end") Instant endTime);
+    Call<Measurements> getMeasurements(@Query("page") int page, @Query("formula") String formula,
+            @Query("start") Instant startTime, @Query("end") Instant endTime);
 
 }

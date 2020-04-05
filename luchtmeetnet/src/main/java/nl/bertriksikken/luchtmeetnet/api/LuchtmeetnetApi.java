@@ -136,11 +136,11 @@ public final class LuchtmeetnetApi {
         return measurements.getData();
     }
 
-    public List<MeasurementData> getMeasurements(Instant instant) throws IOException {
+    public List<MeasurementData> getMeasurements(String formula, Instant instant) throws IOException {
     	Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
     	Instant startTime = endTime.minus(Duration.ofMinutes(60));
     	int page = 1;
-    	Response<Measurements> response = api.getMeasurements(page, startTime, endTime).execute();
+    	Response<Measurements> response = api.getMeasurements(page, formula, startTime, endTime).execute();
         if (!response.isSuccessful()) {
             throw new IOException("Request failed for page " + page);
         }
