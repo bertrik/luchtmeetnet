@@ -24,7 +24,7 @@ public interface ILuchtmeetnetRestApi {
     Call<Station> getStation(@Path("number") String number);
 
     @GET("/open_api/stations/{number}/measurements")
-    Call<Measurements> getStationMeasurement(@Path("number") String number, @Query("page") int page);
+    Call<Measurements> getStationMeasurement(@Query("page") int page, @Path("number") String number);
 
     @GET("/open_api/organisations")
     Call<Organisations> getOrganisations(@Query("page") int page);
