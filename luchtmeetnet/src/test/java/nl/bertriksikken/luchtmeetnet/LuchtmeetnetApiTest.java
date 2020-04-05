@@ -53,7 +53,6 @@ public final class LuchtmeetnetApiTest {
         LOG.info("Station {}: {}", number, stationData);
         
         // get all measurements from the past hour
-        LOG.info("Data for station {}:", number);
         Instant now = Instant.now();
         List<MeasurementData> measurementData = api.getMeasurements(now);
         LOG.info("Found {} neasurements for the past hour", measurementData.size());
