@@ -1,5 +1,7 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
+import java.util.Locale;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class Pagination {
@@ -44,6 +46,11 @@ public final class Pagination {
 
     public int[] getPages() {
         return pages.clone();
+    }
+    
+    @Override
+    public String toString() {
+        return String.format(Locale.ROOT, "%d/%d", currentPage, lastPage);
     }
 
 }
