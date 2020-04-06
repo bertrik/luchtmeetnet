@@ -4,22 +4,18 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
+
+import nl.bertriksikken.luchtmeetnet.api.dto.ComponentsData;
+import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
+import nl.bertriksikken.luchtmeetnet.api.dto.OrganisationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.Station;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationsData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.bertriksikken.luchtmeetnet.api.dto.Components;
-import nl.bertriksikken.luchtmeetnet.api.dto.ComponentsData;
-import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
-import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.OrganisationData;
-import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
-import nl.bertriksikken.luchtmeetnet.api.dto.PagedResponse;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
-import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -37,77 +33,37 @@ public final class LuchtmeetnetApi {
 
     public static ILuchtmeetnetRestApi newRestClient(String url, Duration timeout) {
         LOG.info("Creating new REST client for URL '{}' with timeout {}", url, timeout);
-        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(timeout).writeTimeout(timeout)
-                .readTimeout(timeout).build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(JacksonConverterFactory.create())
-                .client(client).build();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(timeout)
+                .writeTimeout(timeout)
+                .readTimeout(timeout)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .client(client)
+                .build();
         return retrofit.create(ILuchtmeetnetRestApi.class);
     }
 
     /**
-     * Retrieves all station numbers.
+     * Retrieves all station metadata.
      * 
      * @return a list of station numbers
-     * @throws IOException
+     * @throws IOException in case of a problem fetching the data
      */
-    public List<String> getStationNumbers() throws IOException {
-        int page = 1;
-        List<String> list = new ArrayList<>();
-        while (true) {
-            // iterate over all pages
-            Response<Stations> response = api.getStations(page).execute();
-            if (!response.isSuccessful()) {
-                throw new IOException("Request failed for page " + page);
-            }
-            Stations stations = response.body();
-            stations.getData().forEach(s -> list.add(s.getNumber()));
-            // next page?
-            if (page < stations.getPagination().getLastPage()) {
-                page++;
-            } else {
-                return list;
-            }
-        }
+    public List<StationsData> getStations() throws IOException {
+        PagedResponseFetcher<StationsData> fetcher = new PagedResponseFetcher<>(10);
+        return fetcher.fetch((page) -> api.getStations(page).execute().body());
     }
-    
+
     public List<OrganisationData> getOrganisations() throws IOException {
-        int page = 1;
-        List<OrganisationData> list = new ArrayList<>();
-        while (true) {
-            // iterate over all pages
-            Response<Organisations> response = api.getOrganisations(page).execute();
-            if (!response.isSuccessful()) {
-                throw new IOException("Request failed for page " + page);
-            }
-            PagedResponse<OrganisationData> body = response.body();
-            list.addAll(body.getData());
-            // next page?
-            if (page < body.getPagination().getLastPage()) {
-                page++;
-            } else {
-                return list;
-            }
-        }
+        PagedResponseFetcher<OrganisationData> fetcher = new PagedResponseFetcher<>(10);
+        return fetcher.fetch((page) -> api.getOrganisations(page).execute().body());
     }
 
     public List<ComponentsData> getComponents() throws IOException {
-        int page = 1;
-        List<ComponentsData> list = new ArrayList<>();
-        while (true) {
-            // iterate over all pages
-            Response<Components> response = api.getComponents(page).execute();
-            if (!response.isSuccessful()) {
-                throw new IOException("Request failed for page " + page);
-            }
-            PagedResponse<ComponentsData> body = response.body();
-            list.addAll(body.getData());
-            // next page?
-            if (page < body.getPagination().getLastPage()) {
-                page++;
-            } else {
-                return list;
-            }
-        }
+        PagedResponseFetcher<ComponentsData> fetcher = new PagedResponseFetcher<>(10);
+        return fetcher.fetch((page) -> api.getComponents(page).execute().body());
     }
 
     /**
@@ -115,7 +71,7 @@ public final class LuchtmeetnetApi {
      * 
      * @param number the station number
      * @return the station data
-     * @throws IOException
+     * @throws IOException in case of a problem fetching the data
      */
     public StationData getStationData(String number) throws IOException {
         Response<Station> response = api.getStation(number).execute();
@@ -126,26 +82,16 @@ public final class LuchtmeetnetApi {
         return station.getData();
     }
 
-    public List<MeasurementData> getStationMeasurements(String number) throws IOException {
-        int page = 1;
-        Response<Measurements> response = api.getStationMeasurement(1, number).execute();
-        if (!response.isSuccessful()) {
-            throw new IOException("Request failed for page " + page);
-        }
-        Measurements measurements = response.body();
-        return measurements.getData();
+    public List<MeasurementData> getStationMeasurements(String number, String formula) throws IOException {
+        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
+        return fetcher.fetch((page) -> api.getStationMeasurements(number, page, formula).execute().body());
     }
 
     public List<MeasurementData> getMeasurements(String formula, Instant instant) throws IOException {
-    	Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
-    	Instant startTime = endTime.minus(Duration.ofMinutes(60));
-    	int page = 1;
-    	Response<Measurements> response = api.getMeasurements(page, formula, startTime, endTime).execute();
-        if (!response.isSuccessful()) {
-            throw new IOException("Request failed for page " + page);
-        }
-    	Measurements measurements = response.body();
-    	return measurements.getData();
+        Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
+        Instant startTime = endTime.minus(Duration.ofMinutes(60));
+        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
+        return fetcher.fetch((page) -> api.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
-    
+
 }

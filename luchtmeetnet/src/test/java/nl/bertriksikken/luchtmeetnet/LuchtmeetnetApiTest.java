@@ -8,15 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import nl.bertriksikken.luchtmeetnet.api.ILuchtmeetnetRestApi;
 import nl.bertriksikken.luchtmeetnet.api.LuchtmeetnetApi;
 import nl.bertriksikken.luchtmeetnet.api.dto.ComponentsData;
 import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
 import nl.bertriksikken.luchtmeetnet.api.dto.OrganisationData;
 import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationsData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class LuchtmeetnetApiTest {
 
@@ -47,14 +48,16 @@ public final class LuchtmeetnetApiTest {
         }
 
         // get a list of all stations
-        List<String> numbers = api.getStationNumbers();
-        LOG.info("Found {} stations", numbers.size());
-        
-        // get a list of all station data
-        Map<String, StationData> stationData = new HashMap<>();
-        for (String stationNr : numbers) {
+        List<StationsData> stations = api.getStations();
+        LOG.info("Found {} stations", stations.size());
+
+        // get a list of all station details
+        Map<String, StationData> stationDataMap = new HashMap<>();
+        for (StationsData station : stations) {
+            String stationNr = station.getNumber();
             LOG.info("Getting data for station {}", stationNr);
-            stationData.put(stationNr, api.getStationData(stationNr));
+            StationData stationData = api.getStationData(stationNr);
+            stationDataMap.put(stationNr, stationData);
         }
 
         // get all measurements from the past hour
@@ -64,8 +67,7 @@ public final class LuchtmeetnetApiTest {
 
         File file = new File("geojson.json");
         GeoJsonWriter writer = new GeoJsonWriter();
-        writer.writeGeoJson(file, stationData, measurementData);
+        writer.writeGeoJson(file, stationDataMap, measurementData);
     }
-
 
 }
