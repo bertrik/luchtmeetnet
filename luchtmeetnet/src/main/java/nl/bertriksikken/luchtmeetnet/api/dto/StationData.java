@@ -21,6 +21,12 @@ public final class StationData {
     @JsonProperty("type")
     private String type;
 
+    @JsonProperty("municipality")
+    private String municipality;
+
+    @JsonProperty("organisation")
+    private String organisation;
+
     @JsonProperty("components")
     private List<String> components;
 
