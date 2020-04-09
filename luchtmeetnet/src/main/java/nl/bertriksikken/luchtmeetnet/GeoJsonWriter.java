@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,7 @@ import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
 
 public final class GeoJsonWriter {
 
-    public void writeGeoJson(File file, Map<String, StationData> stationDataMap, List<MeasurementData> measurementData)
+    public void writeGeoJson(File file, Map<String, StationData> stationDataMap, List<MeasurementData> measurements)
             throws IOException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode root = mapper.createObjectNode();
@@ -26,7 +27,7 @@ public final class GeoJsonWriter {
         for (Entry<String, StationData> entry : stationDataMap.entrySet()) {
             String stationNr = entry.getKey();
             StationData stationData = entry.getValue();
-            
+
             ObjectNode feature = mapper.createObjectNode();
             features.add(feature);
             feature.put("type", "Feature");
@@ -39,15 +40,19 @@ public final class GeoJsonWriter {
             coordinates.add(stationData.getGeometry().getLatitude());
             coordinates.add(stationData.getGeometry().getLongitude());
 
-            // add all component values as properties
+            // add station number as property
             ObjectNode properties = mapper.createObjectNode();
             feature.set("properties", properties);
-            ArrayNode components = mapper.createArrayNode();
-            properties.set("components", components);
-            ObjectNode component = mapper.createObjectNode();
-            components.add(component);
-            component.put("NO2", 1.234);
             properties.put("station_number", stationNr);
+
+            // add all component values as properties
+            ObjectNode components = mapper.createObjectNode();
+            properties.set("components", components);
+            List<MeasurementData> stationMeasurements = measurements.stream()
+                    .filter(m -> m.getStationNumber().equals(stationNr)).collect(Collectors.toList());
+            for (MeasurementData data : stationMeasurements) {
+                components.put(data.getFormula(), data.getValue());
+            }
         }
 
         mapper.writeValue(file, root);
