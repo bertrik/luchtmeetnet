@@ -16,5 +16,5 @@ public final class PaginationTest {
         Pagination pagination = new Pagination();
         LOG.info(pagination.toString());
     }
-    
+
 }

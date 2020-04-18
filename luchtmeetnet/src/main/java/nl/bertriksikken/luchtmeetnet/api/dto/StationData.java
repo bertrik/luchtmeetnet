@@ -14,10 +14,10 @@ public final class StationData {
 
     @JsonProperty("description")
     private MultiLingualText description;
-    
+
     @JsonProperty("geometry")
     private PointGeometry geometry;
-    
+
     @JsonProperty("type")
     private String type;
 
@@ -33,7 +33,7 @@ public final class StationData {
     public PointGeometry getGeometry() {
         return geometry;
     }
-    
+
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "{location=%s, type=%s, geometry=%s}", location, type, geometry);

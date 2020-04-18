@@ -33,15 +33,10 @@ public final class LuchtmeetnetApi {
 
     public static ILuchtmeetnetRestApi newRestClient(String url, Duration timeout) {
         LOG.info("Creating new REST client for URL '{}' with timeout {}", url, timeout);
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(timeout)
-                .writeTimeout(timeout)
-                .readTimeout(timeout)
-                .build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
-                .addConverterFactory(JacksonConverterFactory.create())
-                .client(client)
-                .build();
+        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(timeout).writeTimeout(timeout)
+                .readTimeout(timeout).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(JacksonConverterFactory.create())
+                .client(client).build();
         return retrofit.create(ILuchtmeetnetRestApi.class);
     }
 
