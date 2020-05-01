@@ -48,7 +48,7 @@ public final class MeasurementData {
     }
 
     public Date getTimeStamp() {
-        return timeStamp;
+        return new Date(timeStamp.getTime());
     }
 
     @Override
