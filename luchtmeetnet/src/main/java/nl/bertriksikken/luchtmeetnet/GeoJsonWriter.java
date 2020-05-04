@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
 
 public final class GeoJsonWriter {
 
@@ -40,10 +40,15 @@ public final class GeoJsonWriter {
             coordinates.add(stationData.getGeometry().getLatitude());
             coordinates.add(stationData.getGeometry().getLongitude());
 
-            // add station number as property
+            // feature properties
             ObjectNode properties = mapper.createObjectNode();
             feature.set("properties", properties);
-            properties.put("station_number", stationNr);
+
+            // add station info to properties
+            ObjectNode stationNode = mapper.createObjectNode();
+            properties.set("station", stationNode);
+            stationNode.put("number", stationNr);
+            stationNode.put("location", stationData.getLocation());
 
             // add all component values as properties
             ObjectNode components = mapper.createObjectNode();

@@ -30,6 +30,10 @@ public final class StationData {
     @JsonProperty("components")
     private List<String> components;
 
+    public String getLocation() {
+        return location;
+    }
+
     public PointGeometry getGeometry() {
         return geometry;
     }
