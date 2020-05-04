@@ -15,11 +15,7 @@ public final class MultiLingualText extends HashMap<String, String> {
     }
 
     public String get(String language) {
-        String text = super.get(language);
-        if (text == null) {
-            text = "<text unavailable>";
-        }
-        return text;
+        return getOrDefault(language, "???");
     }
 
 }
