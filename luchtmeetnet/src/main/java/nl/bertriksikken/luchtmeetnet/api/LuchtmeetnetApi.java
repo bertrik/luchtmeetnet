@@ -89,4 +89,11 @@ public final class LuchtmeetnetApi {
         return fetcher.fetch((page) -> api.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
 
+    public List<MeasurementData> getLki(Instant instant) throws IOException {
+        Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
+        Instant startTime = endTime.minus(Duration.ofMinutes(65));
+        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(10);
+        return fetcher.fetch((page) -> api.getLki(page, startTime, endTime).execute().body());
+    }
+
 }

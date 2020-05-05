@@ -47,6 +47,11 @@ public final class LuchtmeetnetApiTest {
             LOG.info("Component: {}", component);
         }
 
+        // get LKI
+        Instant now = Instant.now();
+        List<MeasurementData> lki = api.getLki(now);
+        LOG.info("Found {} LKI measurements", lki.size());
+        
         // get a list of all stations
         List<StationsData> stations = api.getStations();
         LOG.info("Found {} stations", stations.size());
@@ -61,7 +66,6 @@ public final class LuchtmeetnetApiTest {
         }
 
         // get all measurements from the past hour
-        Instant now = Instant.now();
         List<MeasurementData> measurementData = api.getMeasurements("", now);
         LOG.info("Found {} neasurements for the past hour", measurementData.size());
 

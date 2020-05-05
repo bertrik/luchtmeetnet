@@ -38,4 +38,8 @@ public interface ILuchtmeetnetRestApi {
     Call<Measurements> getMeasurements(@Query("page") int page, @Query("formula") String formula,
             @Query("start") Instant startTime, @Query("end") Instant endTime);
 
+    @GET("/open_api/lki")
+    Call<Measurements> getLki(@Query("page") int page, @Query("start") Instant startTime,
+            @Query("end") Instant endTime);
+
 }
