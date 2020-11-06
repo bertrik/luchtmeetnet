@@ -10,6 +10,11 @@ import nl.bertriksikken.luchtmeetnet.api.dto.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Fetcher for luchtmeetnet paged response.
+ * 
+ * @param <T> the type of response data
+ */
 final class PagedResponseFetcher<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PagedResponseFetcher.class);
@@ -23,6 +28,13 @@ final class PagedResponseFetcher<T> {
         this.maxPage = maxPage;
     }
 
+    /**
+     * Fetches data of the specified type, collecting data from all pages.
+     * 
+     * @param pageFetcher fetcher for one page of data
+     * @return list of data from all pages
+     * @throws IOException
+     */
     public List<T> fetch(IPageFetcher<T> pageFetcher) throws IOException {
         List<T> items = new ArrayList<>();
         for (int page = 1; page < maxPage; page++) {
@@ -38,6 +50,9 @@ final class PagedResponseFetcher<T> {
         return items;
     }
 
+    /**
+     * Fetch one page of paginated data of type T.
+     */
     public interface IPageFetcher<T> {
         PagedResponse<T> fetch(int page) throws IOException;
     }
