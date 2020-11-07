@@ -67,7 +67,7 @@ public final class LuchtmeetnetApiTest {
 
         // get all measurements from the past hour
         List<MeasurementData> measurementData = api.getMeasurements("", now);
-        LOG.info("Found {} neasurements for the past hour", measurementData.size());
+        LOG.info("Found {} measurements for the past hour", measurementData.size());
 
         File file = new File("geojson.json");
         GeoJsonWriter writer = new GeoJsonWriter();
