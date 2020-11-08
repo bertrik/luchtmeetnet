@@ -37,8 +37,8 @@ public final class GeoJsonWriter {
             geometry.put("type", "Point");
             ArrayNode coordinates = mapper.createArrayNode();
             geometry.set("coordinates", coordinates);
-            coordinates.add(stationData.getGeometry().getLatitude());
             coordinates.add(stationData.getGeometry().getLongitude());
+            coordinates.add(stationData.getGeometry().getLatitude());
 
             // feature properties
             ObjectNode properties = mapper.createObjectNode();
