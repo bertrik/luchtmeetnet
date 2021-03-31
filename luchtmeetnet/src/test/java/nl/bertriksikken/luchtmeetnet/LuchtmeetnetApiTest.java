@@ -29,7 +29,7 @@ public final class LuchtmeetnetApiTest {
     }
 
     private void run() throws IOException {
-        ILuchtmeetnetRestApi restApi = LuchtmeetnetApi.newRestClient("https://api.luchtmeetnet.nl/open_api/",
+        ILuchtmeetnetRestApi restApi = LuchtmeetnetApi.newRestClient("https://api.luchtmeetnet.nl",
                 Duration.ofSeconds(10));
         LuchtmeetnetApi api = new LuchtmeetnetApi(restApi);
 
