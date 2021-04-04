@@ -52,23 +52,27 @@ public final class LuchtmeetnetApiTest {
         List<MeasurementData> lki = api.getLki(now);
         LOG.info("Found {} LKI measurements", lki.size());
         
-        // get a list of all stations
-        List<StationsData> stations = api.getStations();
-        LOG.info("Found {} stations", stations.size());
-
-        // get a list of all station details
-        Map<String, StationData> stationDataMap = new HashMap<>();
-        for (StationsData station : stations) {
-            String stationNr = station.getNumber();
-            LOG.info("Getting data for station {}", stationNr);
-            StationData stationData = api.getStationData(stationNr);
-            stationDataMap.put(stationNr, stationData);
-        }
-
         // get all measurements from the past hour
         List<MeasurementData> measurementData = api.getMeasurements("", now);
         LOG.info("Found {} measurements for the past hour", measurementData.size());
         measurementData.addAll(lki);
+
+        // get a list of all stations
+        List<StationsData> stations = api.getStations();
+        LOG.info("Found {} stations", stations.size());
+
+        // get a list of all station details mentioned in the measurement data
+        Map<String, StationData> stationDataMap = new HashMap<>();
+        for (MeasurementData data : measurementData) {
+            String stationNumber = data.getStationNumber();
+            if (!stationDataMap.containsKey(stationNumber)) {
+                StationData stationData = api.getStationData(stationNumber);
+                if (stationData != null) {
+                    stationDataMap.put(stationNumber, stationData);
+                }
+            }
+        }
+        LOG.info("Retrieved station info for {} stations", stationDataMap.keySet().size());
 
         File file = new File("geojson.json");
         GeoJsonWriter writer = new GeoJsonWriter();

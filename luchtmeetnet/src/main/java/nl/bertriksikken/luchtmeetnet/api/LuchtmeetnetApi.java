@@ -65,13 +65,14 @@ public final class LuchtmeetnetApi {
      * Retrieves the station data for a specific station.
      * 
      * @param number the station number
-     * @return the station data
+     * @return the station data, null if not found
      * @throws IOException in case of a problem fetching the data
      */
     public StationData getStationData(String number) throws IOException {
         Response<Station> response = api.getStation(number).execute();
         if (!response.isSuccessful()) {
-            throw new IOException("Request failed for station " + number);
+            LOG.warn("Failed to retrieve station data for '{}': {}", number, response.errorBody().string());
+            return null;
         }
         Station station = response.body();
         return station.getData();
@@ -84,14 +85,14 @@ public final class LuchtmeetnetApi {
 
     public List<MeasurementData> getMeasurements(String formula, Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
-        Instant startTime = endTime.minus(Duration.ofMinutes(65));
+        Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
         return fetcher.fetch((page) -> api.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
 
     public List<MeasurementData> getLki(Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
-        Instant startTime = endTime.minus(Duration.ofMinutes(65));
+        Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(10);
         return fetcher.fetch((page) -> api.getLki(page, startTime, endTime).execute().body());
     }
