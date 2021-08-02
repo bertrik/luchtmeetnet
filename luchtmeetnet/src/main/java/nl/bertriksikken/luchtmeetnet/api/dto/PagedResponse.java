@@ -1,5 +1,6 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public abstract class PagedResponse<T> {
     }
 
     public List<T> getData() {
-        return data;
+        return Collections.unmodifiableList(data);
     }
 
     @Override

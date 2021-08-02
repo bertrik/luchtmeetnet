@@ -17,7 +17,7 @@ public final class OrganisationData {
     }
 
     public MultiLingualText getName() {
-        return name;
+        return new MultiLingualText(name);
     }
 
     @Override
