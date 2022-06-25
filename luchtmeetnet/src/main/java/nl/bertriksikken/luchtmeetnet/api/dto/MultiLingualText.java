@@ -11,6 +11,12 @@ public final class MultiLingualText extends HashMap<String, String> {
     public static final String ENGLISH = "EN";
     public static final String DUTCH = "NL";
 
+    // jackson constructor
+    @SuppressWarnings("unused")
+    private MultiLingualText() {
+        super();
+    }
+    
     MultiLingualText(MultiLingualText text) {
         putAll(text);
     }
