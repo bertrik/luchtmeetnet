@@ -50,10 +50,10 @@ public final class FeatureCollection extends GeoJsonObject {
         @JsonProperty("coordinates")
         private final double[] coordinates;
 
-        // jackson constructor
+        // jackson no-arg constructor
+        @SuppressWarnings("unused")
         private PointGeometry() {
-            super(EGeometry.POINT);
-            coordinates = new double[0];
+            this(Double.NaN, Double.NaN);
         }
 
         public PointGeometry(double latitude, double longitude) {
