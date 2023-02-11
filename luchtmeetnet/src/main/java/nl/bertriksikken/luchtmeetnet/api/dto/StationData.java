@@ -6,6 +6,8 @@ import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class StationData {
 
