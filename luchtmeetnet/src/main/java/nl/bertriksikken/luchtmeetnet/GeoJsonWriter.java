@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
@@ -30,16 +29,15 @@ public final class GeoJsonWriter {
             String stationNr = entry.getKey();
             StationData stationData = entry.getValue();
 
-            PointGeometry stationGeometry = stationData.getGeometry();
-            Feature feature = new Feature(
-                    new PointGeometry(stationGeometry.getLatitude(), stationGeometry.getLongitude()));
+            PointGeometry geometry = stationData.getGeometry();
+            Feature feature = new Feature(new PointGeometry(geometry.getLatitude(), geometry.getLongitude()));
             collection.add(feature);
 
             // add station info to properties
-            ObjectNode stationNode = mapper.createObjectNode();
-            feature.addProperty("station", stationNode);
-            feature.addProperty("number", stationNr);
-            feature.addProperty("location", stationData.getLocation());
+            Map<String, String> station = new HashMap<>();
+            feature.addProperty("station", station);
+            station.put("number", stationNr);
+            station.put("location", stationData.getLocation());
 
             // add all component values as properties
             Map<String, Double> components = new HashMap<>();
