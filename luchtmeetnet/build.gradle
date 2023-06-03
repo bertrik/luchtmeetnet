@@ -3,10 +3,10 @@ apply plugin: "application"
 mainClassName = 'nl.bertriksikken.luchtmeetnet.LuchtMeetNet'
 
 dependencies {
-    implementation libraries.slf4jlog4j
+    implementation libs.slf4j.reload4j
     
-    implementation libraries.retrofit
-	implementation libraries.jackson
+    implementation libs.bundles.retrofit
+	implementation libs.bundles.jackson
 }
 
 // fix scripts executable bit and line endings
