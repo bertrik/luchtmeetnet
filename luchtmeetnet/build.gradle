@@ -1,6 +1,8 @@
 apply plugin: "application"
 
-mainClassName = 'nl.bertriksikken.luchtmeetnet.LuchtMeetNet'
+application {
+    mainClass = 'nl.bertriksikken.luchtmeetnet.LuchtMeetNet'
+}
 
 dependencies {
     implementation libs.slf4j.reload4j
