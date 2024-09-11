@@ -33,7 +33,6 @@ final class PagedResponseFetcher<T> {
      * 
      * @param pageFetcher fetcher for one page of data
      * @return list of data from all pages
-     * @throws IOException
      */
     public List<T> fetch(IPageFetcher<T> pageFetcher) throws IOException {
         List<T> items = new ArrayList<>();

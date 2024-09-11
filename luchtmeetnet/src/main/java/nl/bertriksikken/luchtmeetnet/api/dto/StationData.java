@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
 
+@SuppressWarnings("UnusedVariable")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class StationData {
 
