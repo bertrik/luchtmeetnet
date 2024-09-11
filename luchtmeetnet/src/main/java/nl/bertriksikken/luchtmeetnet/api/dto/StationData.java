@@ -1,12 +1,10 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
-import java.util.List;
-import java.util.Locale;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("UnusedVariable")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,7 +17,7 @@ public final class StationData {
     private MultiLingualText description;
 
     @JsonProperty("geometry")
-    private PointGeometry geometry;
+    private Geometry geometry;
 
     @JsonProperty("type")
     private String type;
@@ -37,13 +35,20 @@ public final class StationData {
         return location;
     }
 
-    public PointGeometry getGeometry() {
-        return geometry;
+    public double[] getCoordinates() {
+        return geometry.coordinates;
     }
 
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "{location=%s, type=%s, geometry=%s}", location, type, geometry);
+    }
+
+    private static final class Geometry {
+        @JsonProperty("type")
+        String type = "";
+        @JsonProperty("coordinates")
+        double[] coordinates = new double[0];
     }
 
 }

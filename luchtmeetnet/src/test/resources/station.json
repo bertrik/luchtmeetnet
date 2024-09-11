@@ -1,0 +1,27 @@
+{
+  "data": {
+    "type": "Industrial",
+    "components": [
+      "NO",
+      "NO2",
+      "PM10",
+      "PM25",
+      "PS",
+      "O3"
+    ],
+    "geometry": {
+      "type": "point",
+      "coordinates": [5.82224, 50.98445]
+    },
+    "municipality": "Sittard-Geleen",
+    "url": "",
+    "province": null,
+    "organisation": "ODZL (Limburg)",
+    "location": "Geleen-Asterstraat",
+    "year_start": "1986",
+    "description": {
+      "NL": "Geleen-Asterstraat",
+      "EN": "Geleen-Asterstraat"
+    }
+  }
+}

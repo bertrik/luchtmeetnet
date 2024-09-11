@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
-import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
+import nl.bertriksikken.geojson.GeoJsonGeometry;
 import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
 import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
 
@@ -29,8 +29,8 @@ public final class GeoJsonWriter {
             String stationNr = entry.getKey();
             StationData stationData = entry.getValue();
 
-            PointGeometry geometry = stationData.getGeometry();
-            Feature feature = new Feature(new PointGeometry(geometry.getLatitude(), geometry.getLongitude()));
+            double[] coordinates = stationData.getCoordinates();
+            Feature feature = new Feature(new GeoJsonGeometry.Point(coordinates[1], coordinates[0]));
             collection.add(feature);
 
             // add station info to properties

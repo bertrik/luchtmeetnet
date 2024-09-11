@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
-import nl.bertriksikken.geojson.FeatureCollection.GeoJsonGeometry;
-import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
 
 public final class FeatureCollectionTest {
 
@@ -17,7 +15,7 @@ public final class FeatureCollectionTest {
 
     @Test
     public void testSerialize() throws JsonProcessingException {
-        GeoJsonGeometry geometry = new PointGeometry(0.0, 0.0);
+        GeoJsonGeometry geometry = new GeoJsonGeometry.Point(0.0, 0.0);
         Feature feature = new Feature(geometry);
         FeatureCollection collection = new FeatureCollection();
         collection.add(feature);
@@ -31,10 +29,10 @@ public final class FeatureCollectionTest {
     @Test
     public void testGeometry() throws JsonProcessingException {
         // serialize
-        PointGeometry geometry = new PointGeometry(12.34, 56.78);
+        GeoJsonGeometry.Point geometry = new GeoJsonGeometry.Point(12.34, 56.78);
         String json = MAPPER.writeValueAsString(geometry);
         // deserialize
-        PointGeometry decoded = MAPPER.readValue(json, PointGeometry.class);
+        GeoJsonGeometry.Point decoded = MAPPER.readValue(json, GeoJsonGeometry.Point.class);
         Assert.assertEquals(12.34, decoded.getLatitude(), 0.01);
         Assert.assertEquals(56.78, decoded.getLongitude(), 0.01);
     }
