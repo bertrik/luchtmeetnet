@@ -3,6 +3,7 @@ package nl.bertriksikken.luchtmeetnet.api.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +50,12 @@ public final class StationData {
         String type = "";
         @JsonProperty("coordinates")
         double[] coordinates = new double[0];
+
+        @Override
+        public String toString() {
+            return String.format(Locale.ROOT, "{type=%s,coords=%s", type, Arrays.toString(coordinates));
+        }
     }
+
 
 }
