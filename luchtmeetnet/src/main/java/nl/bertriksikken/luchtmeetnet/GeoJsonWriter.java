@@ -1,21 +1,19 @@
 package nl.bertriksikken.luchtmeetnet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import nl.bertriksikken.geojson.FeatureCollection;
+import nl.bertriksikken.geojson.FeatureCollection.Feature;
+import nl.bertriksikken.geojson.GeoJsonGeometry;
+import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import nl.bertriksikken.geojson.FeatureCollection;
-import nl.bertriksikken.geojson.FeatureCollection.Feature;
-import nl.bertriksikken.geojson.GeoJsonGeometry;
-import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
 
 public final class GeoJsonWriter {
 
@@ -43,7 +41,7 @@ public final class GeoJsonWriter {
             Map<String, Double> components = new HashMap<>();
             feature.addProperty("components", components);
             List<MeasurementData> stationMeasurements = measurements.stream()
-                    .filter(m -> m.getStationNumber().equals(stationNr)).collect(Collectors.toList());
+                    .filter(m -> m.getStationNumber().equals(stationNr)).toList();
             for (MeasurementData data : stationMeasurements) {
                 components.put(data.getFormula(), data.getValue());
             }
