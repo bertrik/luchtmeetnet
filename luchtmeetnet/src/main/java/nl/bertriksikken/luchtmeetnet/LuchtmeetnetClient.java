@@ -50,17 +50,17 @@ public final class LuchtmeetnetClient implements AutoCloseable{
      */
     public List<Stations.Data> getStations() throws IOException {
         PagedResponseFetcher<Stations.Data> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> restApi.getStations(page).execute().body());
+        return fetcher.fetch(page -> restApi.getStations(page).execute().body());
     }
 
     public List<Organisations.Data> getOrganisations() throws IOException {
         PagedResponseFetcher<Organisations.Data> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> restApi.getOrganisations(page).execute().body());
+        return fetcher.fetch(page -> restApi.getOrganisations(page).execute().body());
     }
 
     public List<Components.Data> getComponents() throws IOException {
         PagedResponseFetcher<Components.Data> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> restApi.getComponents(page).execute().body());
+        return fetcher.fetch(page -> restApi.getComponents(page).execute().body());
     }
 
     /**
@@ -82,21 +82,21 @@ public final class LuchtmeetnetClient implements AutoCloseable{
 
     public List<Measurements.Data> getStationMeasurements(String number, String formula) throws IOException {
         PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(100);
-        return fetcher.fetch((page) -> restApi.getStationMeasurements(number, page, formula).execute().body());
+        return fetcher.fetch(page -> restApi.getStationMeasurements(number, page, formula).execute().body());
     }
 
     public List<Measurements.Data> getMeasurements(String formula, Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(100);
-        return fetcher.fetch((page) -> restApi.getMeasurements(page, formula, startTime, endTime).execute().body());
+        return fetcher.fetch(page -> restApi.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
 
     public List<Measurements.Data> getLki(Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> restApi.getLki(page, startTime, endTime).execute().body());
+        return fetcher.fetch(page -> restApi.getLki(page, startTime, endTime).execute().body());
     }
 
 }
