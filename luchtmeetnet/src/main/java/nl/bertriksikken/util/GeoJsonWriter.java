@@ -1,12 +1,12 @@
-package nl.bertriksikken.luchtmeetnet;
+package nl.bertriksikken.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
 import nl.bertriksikken.geojson.GeoJsonGeometry;
-import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
+import nl.bertriksikken.luchtmeetnet.Measurements;
+import nl.bertriksikken.luchtmeetnet.Station;
 
 import java.io.File;
 import java.io.IOException;

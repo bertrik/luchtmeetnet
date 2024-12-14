@@ -1,10 +1,5 @@
-package nl.bertriksikken.luchtmeetnet.api;
+package nl.bertriksikken.luchtmeetnet;
 
-import nl.bertriksikken.luchtmeetnet.api.dto.Components;
-import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

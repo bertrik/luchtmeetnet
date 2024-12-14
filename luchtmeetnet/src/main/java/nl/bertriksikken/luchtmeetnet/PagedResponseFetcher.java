@@ -1,11 +1,8 @@
-package nl.bertriksikken.luchtmeetnet.api;
+package nl.bertriksikken.luchtmeetnet;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import nl.bertriksikken.luchtmeetnet.api.dto.PagedResponse;
-import nl.bertriksikken.luchtmeetnet.api.dto.Pagination;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

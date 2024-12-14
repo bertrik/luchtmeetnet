@@ -1,12 +1,6 @@
-package nl.bertriksikken.luchtmeetnet.api;
+package nl.bertriksikken.luchtmeetnet;
 
 import java.time.Instant;
-
-import nl.bertriksikken.luchtmeetnet.api.dto.Components;
-import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

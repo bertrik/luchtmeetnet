@@ -1,4 +1,4 @@
-package nl.bertriksikken.luchtmeetnet.api.dto;
+package nl.bertriksikken.luchtmeetnet;
 
 import java.util.Locale;
 

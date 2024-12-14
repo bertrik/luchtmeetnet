@@ -1,11 +1,6 @@
 package nl.bertriksikken.luchtmeetnet;
 
-import nl.bertriksikken.luchtmeetnet.api.LuchtmeetnetClient;
-import nl.bertriksikken.luchtmeetnet.api.dto.Components;
-import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
+import nl.bertriksikken.util.GeoJsonWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
