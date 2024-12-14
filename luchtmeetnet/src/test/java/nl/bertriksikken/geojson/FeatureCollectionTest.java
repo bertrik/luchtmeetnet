@@ -1,13 +1,13 @@
 package nl.bertriksikken.geojson;
 
-import org.junit.Assert;
-import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public final class FeatureCollectionTest {
 
@@ -33,8 +33,8 @@ public final class FeatureCollectionTest {
         String json = MAPPER.writeValueAsString(geometry);
         // deserialize
         GeoJsonGeometry.Point decoded = MAPPER.readValue(json, GeoJsonGeometry.Point.class);
-        Assert.assertEquals(12.34, decoded.getLatitude(), 0.01);
-        Assert.assertEquals(56.78, decoded.getLongitude(), 0.01);
+        Assertions.assertEquals(12.34, decoded.getLatitude(), 0.01);
+        Assertions.assertEquals(56.78, decoded.getLongitude(), 0.01);
     }
 
 }

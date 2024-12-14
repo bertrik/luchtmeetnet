@@ -1,8 +1,8 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,8 +16,8 @@ public final class StationTest {
         Station station = mapper.readValue(url, Station.class);
         StationData stationData = station.getData();
         double[] coordinates = stationData.getCoordinates();
-        Assert.assertEquals(5.82224, coordinates[0], 0.00001);
-        Assert.assertEquals(50.98445, coordinates[1], 0.00001);
+        Assertions.assertEquals(5.82224, coordinates[0], 0.00001);
+        Assertions.assertEquals(50.98445, coordinates[1], 0.00001);
     }
 
 }

@@ -32,16 +32,22 @@ subprojects {
         }
     }
 
+    test {
+        useJUnitPlatform()
+    }
+
     // Standard libraries added to all projects
     dependencies {
         errorprone(libs.errorprone.core)
         compileOnly libs.errorprone.annotations
+        implementation libs.slf4j.api
 
-        testImplementation libs.junit
         testImplementation libs.mockito.core
         testImplementation libs.slf4j.reload4j
 
-        implementation libs.slf4j.api
+        testImplementation(platform(libs.junit.bom))
+        testImplementation libs.junit.jupiter
+        testRuntimeOnly libs.junit.platform.launcher
     }
 }
 
