@@ -41,9 +41,9 @@ public final class GeoJsonWriter {
             Map<String, Double> components = new HashMap<>();
             feature.addProperty("components", components);
             List<MeasurementData> stationMeasurements = measurements.stream()
-                    .filter(m -> m.getStationNumber().equals(stationNr)).toList();
+                    .filter(m -> m.stationNumber().equals(stationNr)).toList();
             for (MeasurementData data : stationMeasurements) {
-                components.put(data.getFormula(), data.getValue());
+                components.put(data.formula(), data.value());
             }
         }
 

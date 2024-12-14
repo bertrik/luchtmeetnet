@@ -61,7 +61,7 @@ public final class LuchtmeetnetClientTest {
         // get a list of all station details mentioned in the measurement data
         Map<String, StationData> stationDataMap = new HashMap<>();
         for (MeasurementData data : measurementData) {
-            String stationNumber = data.getStationNumber();
+            String stationNumber = data.stationNumber();
             if (!stationDataMap.containsKey(stationNumber)) {
                 StationData stationData = client.getStationData(stationNumber);
                 if (stationData != null) {
