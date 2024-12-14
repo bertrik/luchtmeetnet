@@ -1,10 +1,9 @@
 package nl.bertriksikken.luchtmeetnet;
 
-import java.util.Collections;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Locale;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class PagedResponse<T> {
 
@@ -19,7 +18,7 @@ public abstract class PagedResponse<T> {
     }
 
     public List<T> getData() {
-        return Collections.unmodifiableList(data);
+        return List.copyOf(data);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package nl.bertriksikken.luchtmeetnet;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public final class MultiLingualText extends HashMap<String, String> {
     }
     
     public Set<String> getLanguages() {
-        return Collections.unmodifiableSet(keySet());
+        return Set.copyOf(keySet());
     }
 
     public String get(String language) {
