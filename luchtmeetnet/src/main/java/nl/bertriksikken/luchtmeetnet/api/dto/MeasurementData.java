@@ -1,11 +1,9 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
-import java.util.Date;
-import java.util.Locale;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Locale;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class MeasurementData {
@@ -20,19 +18,18 @@ public final class MeasurementData {
     private String formula;
 
     @JsonProperty("timestamp_measured")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private Date timeStamp;
+    private String timeStamp; // for example "2024-12-14T18:00:00+00:00"
 
     private MeasurementData() {
         // jackson constructor
     }
 
-    public MeasurementData(String stationNumber, double value, String formula, Date timeStamp) {
+    public MeasurementData(String stationNumber, double value, String formula, String timeStamp) {
         this();
         this.stationNumber = stationNumber;
         this.value = value;
         this.formula = formula;
-        this.timeStamp = new Date(timeStamp.getTime());
+        this.timeStamp = timeStamp;
     }
 
     public String getStationNumber() {
@@ -47,8 +44,8 @@ public final class MeasurementData {
         return formula;
     }
 
-    public Date getTimeStamp() {
-        return new Date(timeStamp.getTime());
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
     @Override
