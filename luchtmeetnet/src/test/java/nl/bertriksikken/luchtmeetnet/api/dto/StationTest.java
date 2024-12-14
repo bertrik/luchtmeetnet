@@ -14,8 +14,8 @@ public final class StationTest {
         ObjectMapper mapper = new ObjectMapper();
         URL url = getClass().getClassLoader().getResource("station.json");
         Station station = mapper.readValue(url, Station.class);
-        StationData stationData = station.getData();
-        double[] coordinates = stationData.getCoordinates();
+        Station.Data stationData = station.data();
+        double[] coordinates = stationData.geometry().coordinates();
         Assertions.assertEquals(5.82224, coordinates[0], 0.00001);
         Assertions.assertEquals(50.98445, coordinates[1], 0.00001);
     }

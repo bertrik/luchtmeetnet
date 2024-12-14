@@ -1,23 +1,30 @@
 package nl.bertriksikken.luchtmeetnet.api.dto;
 
-import java.util.Locale;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Station {
+public record Station(@JsonProperty("data") Data data) {
 
-    @JsonProperty("data")
-    private StationData data;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record Data(@JsonProperty("location") String location,
+                       @JsonProperty("description") MultiLingualText description,
+                       @JsonProperty("geometry") Geometry geometry,
+                       @JsonProperty("type") String type,
+                       @JsonProperty("municipality") String municipality,
+                       @JsonProperty("organisation") String organisation,
+                       @JsonProperty("components") List<String> components) {
 
-    public StationData getData() {
-        return data;
+        @SuppressWarnings("ArrayRecordComponent")
+        public record Geometry(@JsonProperty("type") String type,
+                               @JsonProperty("coordinates") double[] coordinates) {
+            public Geometry {
+                type = Objects.requireNonNullElse(type, "");
+                coordinates = Objects.requireNonNullElse(coordinates, new double[0]).clone();
+            }
+        }
     }
-
-    @Override
-    public String toString() {
-        return String.format(Locale.ROOT, "{data=%s}", data);
-    }
-
 }

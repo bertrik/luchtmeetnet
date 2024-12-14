@@ -4,7 +4,7 @@ import nl.bertriksikken.luchtmeetnet.api.LuchtmeetnetClient;
 import nl.bertriksikken.luchtmeetnet.api.dto.Components;
 import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
 import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.Station;
 import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +59,11 @@ public final class RunLuchtmeetnetClient {
         LOG.info("Found {} stations", stations.size());
 
         // get a list of all station details mentioned in the measurement data
-        Map<String, StationData> stationDataMap = new HashMap<>();
+        Map<String, Station.Data> stationDataMap = new HashMap<>();
         for (Measurements.Data data : measurementData) {
             String stationNumber = data.stationNumber();
             if (!stationDataMap.containsKey(stationNumber)) {
-                StationData stationData = client.getStationData(stationNumber);
+                Station.Data stationData = client.getStationData(stationNumber);
                 if (stationData != null) {
                     stationDataMap.put(stationNumber, stationData);
                 }

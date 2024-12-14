@@ -6,7 +6,7 @@ import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
 import nl.bertriksikken.geojson.GeoJsonGeometry;
 import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.Station;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,17 +17,17 @@ import java.util.Map.Entry;
 
 public final class GeoJsonWriter {
 
-    public void writeGeoJson(File file, Map<String, StationData> stationDataMap, List<Measurements.Data> measurements)
+    public void writeGeoJson(File file, Map<String, Station.Data> stationDataMap, List<Measurements.Data> measurements)
             throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         FeatureCollection collection = new FeatureCollection();
-        for (Entry<String, StationData> entry : stationDataMap.entrySet()) {
+        for (Entry<String, Station.Data> entry : stationDataMap.entrySet()) {
             String stationNr = entry.getKey();
-            StationData stationData = entry.getValue();
+            Station.Data stationData = entry.getValue();
 
-            double[] coordinates = stationData.getCoordinates();
+            double[] coordinates = stationData.geometry().coordinates();
             Feature feature = new Feature(new GeoJsonGeometry.Point(coordinates[1], coordinates[0]));
             collection.add(feature);
 
@@ -35,7 +35,7 @@ public final class GeoJsonWriter {
             Map<String, String> station = new HashMap<>();
             feature.addProperty("station", station);
             station.put("number", stationNr);
-            station.put("location", stationData.getLocation());
+            station.put("location", stationData.location());
 
             // add all component values as properties
             Map<String, Double> components = new HashMap<>();

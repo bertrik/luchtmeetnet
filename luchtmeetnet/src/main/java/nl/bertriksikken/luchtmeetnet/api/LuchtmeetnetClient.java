@@ -4,7 +4,6 @@ import nl.bertriksikken.luchtmeetnet.api.dto.Components;
 import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
 import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
 import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
 import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -76,14 +75,14 @@ public final class LuchtmeetnetClient implements AutoCloseable{
      * @return the station data, null if not found
      * @throws IOException in case of a problem fetching the data
      */
-    public StationData getStationData(String number) throws IOException {
+    public Station.Data getStationData(String number) throws IOException {
         Response<Station> response = restApi.getStation(number).execute();
         if (!response.isSuccessful()) {
             LOG.warn("Failed to retrieve station data for '{}': {}", number, response.errorBody().string());
             return null;
         }
         Station station = response.body();
-        return station.getData();
+        return station.data();
     }
 
     public List<Measurements.Data> getStationMeasurements(String number, String formula) throws IOException {
