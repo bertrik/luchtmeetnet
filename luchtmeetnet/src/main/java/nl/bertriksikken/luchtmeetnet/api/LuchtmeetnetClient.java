@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 import nl.bertriksikken.luchtmeetnet.api.dto.ComponentsData;
 import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
@@ -21,23 +22,32 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public final class LuchtmeetnetApi {
+public final class LuchtmeetnetClient implements AutoCloseable{
 
-    private static final Logger LOG = LoggerFactory.getLogger(LuchtmeetnetApi.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LuchtmeetnetClient.class);
 
-    private final ILuchtmeetnetRestApi api;
+    private final ILuchtmeetnetRestApi restApi;
+    private final OkHttpClient httpClient;
 
-    public LuchtmeetnetApi(ILuchtmeetnetRestApi api) {
-        this.api = api;
+    LuchtmeetnetClient(OkHttpClient httpClient, ILuchtmeetnetRestApi restApi) {
+        this.httpClient = Objects.requireNonNull(httpClient);
+        this.restApi = restApi;
     }
 
-    public static ILuchtmeetnetRestApi newRestClient(String url, Duration timeout) {
+    public static LuchtmeetnetClient create(String url, Duration timeout) {
         LOG.info("Creating new REST client for URL '{}' with timeout {}", url, timeout);
-        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(timeout).writeTimeout(timeout)
+        OkHttpClient httpClient = new OkHttpClient().newBuilder().connectTimeout(timeout).writeTimeout(timeout)
                 .readTimeout(timeout).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(JacksonConverterFactory.create())
-                .client(client).build();
-        return retrofit.create(ILuchtmeetnetRestApi.class);
+                .client(httpClient).build();
+        ILuchtmeetnetRestApi restApi =  retrofit.create(ILuchtmeetnetRestApi.class);
+        return new LuchtmeetnetClient(httpClient, restApi);
+    }
+
+    @Override
+    public void close() {
+        httpClient.dispatcher().executorService().shutdown();
+        httpClient.connectionPool().evictAll();
     }
 
     /**
@@ -48,17 +58,17 @@ public final class LuchtmeetnetApi {
      */
     public List<StationsData> getStations() throws IOException {
         PagedResponseFetcher<StationsData> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> api.getStations(page).execute().body());
+        return fetcher.fetch((page) -> restApi.getStations(page).execute().body());
     }
 
     public List<OrganisationData> getOrganisations() throws IOException {
         PagedResponseFetcher<OrganisationData> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> api.getOrganisations(page).execute().body());
+        return fetcher.fetch((page) -> restApi.getOrganisations(page).execute().body());
     }
 
     public List<ComponentsData> getComponents() throws IOException {
         PagedResponseFetcher<ComponentsData> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> api.getComponents(page).execute().body());
+        return fetcher.fetch((page) -> restApi.getComponents(page).execute().body());
     }
 
     /**
@@ -69,7 +79,7 @@ public final class LuchtmeetnetApi {
      * @throws IOException in case of a problem fetching the data
      */
     public StationData getStationData(String number) throws IOException {
-        Response<Station> response = api.getStation(number).execute();
+        Response<Station> response = restApi.getStation(number).execute();
         if (!response.isSuccessful()) {
             LOG.warn("Failed to retrieve station data for '{}': {}", number, response.errorBody().string());
             return null;
@@ -80,21 +90,21 @@ public final class LuchtmeetnetApi {
 
     public List<MeasurementData> getStationMeasurements(String number, String formula) throws IOException {
         PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
-        return fetcher.fetch((page) -> api.getStationMeasurements(number, page, formula).execute().body());
+        return fetcher.fetch((page) -> restApi.getStationMeasurements(number, page, formula).execute().body());
     }
 
     public List<MeasurementData> getMeasurements(String formula, Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
-        return fetcher.fetch((page) -> api.getMeasurements(page, formula, startTime, endTime).execute().body());
+        return fetcher.fetch((page) -> restApi.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
 
     public List<MeasurementData> getLki(Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
         PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(10);
-        return fetcher.fetch((page) -> api.getLki(page, startTime, endTime).execute().body());
+        return fetcher.fetch((page) -> restApi.getLki(page, startTime, endTime).execute().body());
     }
 
 }
