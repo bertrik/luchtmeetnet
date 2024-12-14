@@ -1,7 +1,6 @@
-package nl.bertriksikken.luchtmeetnet.api.dto;
+package nl.bertriksikken.luchtmeetnet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.bertriksikken.luchtmeetnet.Station;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

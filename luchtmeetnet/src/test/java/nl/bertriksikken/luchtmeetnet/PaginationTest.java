@@ -1,6 +1,5 @@
-package nl.bertriksikken.luchtmeetnet.api.dto;
+package nl.bertriksikken.luchtmeetnet;
 
-import nl.bertriksikken.luchtmeetnet.Pagination;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
