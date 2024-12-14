@@ -23,7 +23,7 @@ public final class MeasurementDataTest {
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
         OffsetDateTime now = OffsetDateTime.now(ZoneId.of("Europe/Amsterdam"));
         String timeStamp = FORMATTER.format(now.truncatedTo(ChronoUnit.SECONDS));
-        MeasurementData data = new MeasurementData("123", 1.23, "NO", timeStamp);
+        Measurements.Data data = new Measurements.Data("123", 1.23, "NO", timeStamp);
         String s = mapper.writeValueAsString(data);
         LOG.info(s);
     }

@@ -1,26 +1,24 @@
 package nl.bertriksikken.luchtmeetnet.api;
 
+import nl.bertriksikken.luchtmeetnet.api.dto.Components;
+import nl.bertriksikken.luchtmeetnet.api.dto.Measurements;
+import nl.bertriksikken.luchtmeetnet.api.dto.Organisations;
+import nl.bertriksikken.luchtmeetnet.api.dto.Station;
+import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
+import nl.bertriksikken.luchtmeetnet.api.dto.Stations;
+import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
-
-import nl.bertriksikken.luchtmeetnet.api.dto.ComponentsData;
-import nl.bertriksikken.luchtmeetnet.api.dto.MeasurementData;
-import nl.bertriksikken.luchtmeetnet.api.dto.OrganisationData;
-import nl.bertriksikken.luchtmeetnet.api.dto.Station;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationData;
-import nl.bertriksikken.luchtmeetnet.api.dto.StationsData;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public final class LuchtmeetnetClient implements AutoCloseable{
 
@@ -56,18 +54,18 @@ public final class LuchtmeetnetClient implements AutoCloseable{
      * @return a list of station numbers
      * @throws IOException in case of a problem fetching the data
      */
-    public List<StationsData> getStations() throws IOException {
-        PagedResponseFetcher<StationsData> fetcher = new PagedResponseFetcher<>(10);
+    public List<Stations.Data> getStations() throws IOException {
+        PagedResponseFetcher<Stations.Data> fetcher = new PagedResponseFetcher<>(10);
         return fetcher.fetch((page) -> restApi.getStations(page).execute().body());
     }
 
-    public List<OrganisationData> getOrganisations() throws IOException {
-        PagedResponseFetcher<OrganisationData> fetcher = new PagedResponseFetcher<>(10);
+    public List<Organisations.Data> getOrganisations() throws IOException {
+        PagedResponseFetcher<Organisations.Data> fetcher = new PagedResponseFetcher<>(10);
         return fetcher.fetch((page) -> restApi.getOrganisations(page).execute().body());
     }
 
-    public List<ComponentsData> getComponents() throws IOException {
-        PagedResponseFetcher<ComponentsData> fetcher = new PagedResponseFetcher<>(10);
+    public List<Components.Data> getComponents() throws IOException {
+        PagedResponseFetcher<Components.Data> fetcher = new PagedResponseFetcher<>(10);
         return fetcher.fetch((page) -> restApi.getComponents(page).execute().body());
     }
 
@@ -88,22 +86,22 @@ public final class LuchtmeetnetClient implements AutoCloseable{
         return station.getData();
     }
 
-    public List<MeasurementData> getStationMeasurements(String number, String formula) throws IOException {
-        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
+    public List<Measurements.Data> getStationMeasurements(String number, String formula) throws IOException {
+        PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(100);
         return fetcher.fetch((page) -> restApi.getStationMeasurements(number, page, formula).execute().body());
     }
 
-    public List<MeasurementData> getMeasurements(String formula, Instant instant) throws IOException {
+    public List<Measurements.Data> getMeasurements(String formula, Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
-        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(100);
+        PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(100);
         return fetcher.fetch((page) -> restApi.getMeasurements(page, formula, startTime, endTime).execute().body());
     }
 
-    public List<MeasurementData> getLki(Instant instant) throws IOException {
+    public List<Measurements.Data> getLki(Instant instant) throws IOException {
         Instant endTime = instant.truncatedTo(ChronoUnit.SECONDS);
         Instant startTime = endTime.minus(Duration.ofMinutes(70));
-        PagedResponseFetcher<MeasurementData> fetcher = new PagedResponseFetcher<>(10);
+        PagedResponseFetcher<Measurements.Data> fetcher = new PagedResponseFetcher<>(10);
         return fetcher.fetch((page) -> restApi.getLki(page, startTime, endTime).execute().body());
     }
 
