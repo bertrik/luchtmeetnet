@@ -8,7 +8,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * See https://api-docs.luchtmeetnet.nl/
+ * See <a href="https://api-docs.luchtmeetnet.nl/">Luchtmeetnet API</a>
  */
 public interface ILuchtmeetnetRestApi {
 
