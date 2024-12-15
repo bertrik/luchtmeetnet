@@ -1,15 +1,15 @@
 package nl.bertriksikken.luchtmeetnet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Fetcher for luchtmeetnet paged response.
- * 
+ *
  * @param <T> the type of response data
  */
 final class PagedResponseFetcher<T> {
@@ -27,7 +27,7 @@ final class PagedResponseFetcher<T> {
 
     /**
      * Fetches data of the specified type, collecting data from all pages.
-     * 
+     *
      * @param pageFetcher fetcher for one page of data
      * @return list of data from all pages
      */
@@ -37,10 +37,10 @@ final class PagedResponseFetcher<T> {
             PagedResponse<T> response = pageFetcher.fetch(page);
             items.addAll(response.getData());
             Pagination pagination = response.getPagination();
-            if (page >= pagination.getLastPage()) {
+            if (page >= pagination.lastPage()) {
                 return items;
             }
-            LOG.info("Fetched page {}/{}, getting next ...", pagination.getCurrentPage(), pagination.getLastPage());
+            LOG.info("Fetched page {}/{}, getting next ...", pagination.currentPage(), pagination.lastPage());
         }
         LOG.warn("Limited number of pages to {}, return set truncated", maxPage);
         return items;

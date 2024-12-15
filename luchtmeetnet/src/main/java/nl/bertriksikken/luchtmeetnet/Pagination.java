@@ -1,56 +1,27 @@
 package nl.bertriksikken.luchtmeetnet;
 
-import java.util.Locale;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public final class Pagination {
+@SuppressWarnings("ArrayRecordComponent")
+public record Pagination(@JsonProperty("current_page") int currentPage,
+                         @JsonProperty("next_page") int nextPage,
+                         @JsonProperty("prev_page") int prevPage,
+                         @JsonProperty("last_page") int lastPage,
+                         @JsonProperty("first_page") int firstPage,
+                         @JsonProperty("page_list") int[] pages) {
 
-    @JsonProperty("current_page")
-    private int currentPage;
-
-    @JsonProperty("next_page")
-    private int nextPage;
-
-    @JsonProperty("prev_page")
-    private int prevPage;
-
-    @JsonProperty("last_page")
-    private int lastPage;
-
-    @JsonProperty("first_page")
-    private int firstPage;
-
-    @JsonProperty("page_list")
-    private int[] pages;
-
-    public int getCurrentPage() {
-        return currentPage;
+    public Pagination {
+        pages = pages.clone();
     }
 
-    public int getNextPage() {
-        return nextPage;
-    }
-
-    public int getPrevPage() {
-        return prevPage;
-    }
-
-    public int getLastPage() {
-        return lastPage;
-    }
-
-    public int getFirstPage() {
-        return firstPage;
-    }
-
-    public int[] getPages() {
+    @Override
+    public int[] pages() {
         return pages.clone();
     }
-    
-    @Override
-    public String toString() {
-        return String.format(Locale.ROOT, "%d/%d", currentPage, lastPage);
+
+    // package-private for testing
+    Pagination() {
+        this(0, 0, 0, 0, 0, new int[0]);
     }
 
 }
