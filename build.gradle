@@ -1,5 +1,4 @@
 plugins {
-    alias libs.plugins.dependencycheck
     alias libs.plugins.errorprone
     alias libs.plugins.versions
 }
@@ -22,13 +21,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-    }
-
-    // Reject all non stable versions
-    tasks.named("dependencyUpdates").configure {
-        rejectVersionIf {
-            isNonStable(it.candidate.version)
-        }
     }
 
     test {
