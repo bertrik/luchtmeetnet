@@ -1,6 +1,6 @@
 [versions]
 errorprone = "2.50.0"
-jackson = "2.22.0"
+jackson = "2.22.1"
 junit = "6.1.1"
 mockito = "5.23.0"
 retrofit2 = "3.0.0"
